@@ -4,16 +4,16 @@ import {
 } from './config';
 import { updateDevCommands, updateGlobalCommands } from './utils/commandUpdater';
 import log from './utils/logger';
-import setUpEventHandlers from './events';
-import { setUpCommandCollections } from './commands';
+import setUpEventHandlers, { eventArray } from './events';
+import { devDirsArray, globalDirsArray, setUpCommandCollections } from './commands';
 
 const bot = new Client({ intents: GATEWAY_INTENTS });
 
 async function initialize(botClient: Client) {
   // Add commands to bot client
-  await setUpCommandCollections();
+  await setUpCommandCollections(devDirsArray, globalDirsArray);
   // Add event listeners to bot client
-  await setUpEventHandlers(botClient);
+  await setUpEventHandlers(botClient, eventArray);
   if (DEVELOPMENT_MODE) {
     log.info('[DEV MODE] Updating slash commands for dev server.');
     await updateDevCommands();
